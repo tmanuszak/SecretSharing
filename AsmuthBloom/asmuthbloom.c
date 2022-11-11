@@ -1,3 +1,6 @@
+// Code implementing Asmuth-Bloom secret sharing
+// For Arizona State University's CSE539: Applied Cryptography course.
+
 #include "asmuthbloom.h"
 
 // Free an Asmuth-Bloom instance
