@@ -1,5 +1,7 @@
 This is code that implements Asmuth-Bloom secret sharing based on the Chinese Remainder Theorem. See [link](https://en.wikipedia.org/wiki/Secret_sharing_using_the_Chinese_remainder_theorem#Asmuth-Bloom's_threshold_secret_sharing_scheme) for details.
 
+To run the incomplete "benchmark", run the command ```./benchmark [t] [n] [lambda]``` after ```make```.
+
 It accepts the following parameters:
 - t (threshold)
 - n (participants)
