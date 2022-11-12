@@ -38,6 +38,8 @@ void check_m(struct asmuth_bloom *);
 
 void generate_shares(struct asmuth_bloom *);
 
+int recover_secret(struct asmuth_bloom *);
+
 void print_instance(struct asmuth_bloom *);
 
 #endif

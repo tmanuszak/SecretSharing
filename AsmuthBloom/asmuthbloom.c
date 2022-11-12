@@ -266,11 +266,83 @@ void generate_shares(struct asmuth_bloom *instance)
   return;
 }
 
-// not yet implemented
 // output 1 if secret successfully recovered. 0 else.
 int recover_secret(struct asmuth_bloom *instance)
 {
-  return 0;
+  if (instance->hasShares != 1 || instance->hasM != 1)
+  {
+    printf("Asmuth-Bloom instance does not have shares to reconstruct.\n");
+    exit(EXIT_FAILURE);
+  }
+
+  // Variables
+  int isSecret;
+  mpz_t result;
+  mpz_t dummy;          // Not used, just to satisfy function args
+  mpz_t m_product;      // will be m_1 * ... m_t
+  mpz_t a[instance->t]; // used for Ext Euclidean Algo
+  mpz_t b[instance->t]; // used for Ext Euclidean Algo
+  mpz_t e[instance->t]; // used for construction of secret
+
+  // inits
+  mpz_init(result);
+  mpz_init(dummy);
+  mpz_init_set_ui(m_product, (unsigned long)1);
+  for (int i = 0; i < instance->t; i++)
+  {
+    mpz_init(a[i]);
+    mpz_init(b[i]);
+    mpz_init_set_ui(e[i], (unsigned long)1);
+  }
+
+  // Calculate:
+  // m_product = m_1 * ... * m_t
+  for (int i = 0; i < instance->t; i++)
+  {
+    mpz_mul(m_product, m_product, (instance->m)[i + 1]);
+  }
+
+  // Calculate:
+  // (a_i,b_i) = Extended Euclidian Algo (m_[i+1], m_product / m_[i+1])
+  // e_i = 1 - a_i * m_[i+1]
+  for (int i = 0; i < instance->t; i++)
+  {
+    mpz_cdiv_q(dummy, m_product, (instance->m)[i + 1]); // dummy = m_prod / m_[i+1]
+    mpz_gcdext(dummy, a[i], b[i], (instance->m)[i + 1], dummy);
+    mpz_submul(e[i], a[i], (instance->m)[i + 1]); // e[i] = 1 - a[i] * m[i+1]
+  }
+
+  // Calculate:
+  // result = e[0]*share[0] + ... + e[t-1]*share[t-1] mod m_product
+  for (int i = 0; i < instance->t; i++)
+  {
+    mpz_mul(dummy, e[i], (instance->shares)[i]);
+    mpz_add(result, result, dummy);
+  }
+  mpz_mod(result, result, m_product);
+  mpz_mod(result, result, (instance->m)[0]);
+
+  // compare result to secret
+  if (mpz_cmp(result, instance->s) == 0)
+  { // Success!
+    isSecret = 1;
+  }
+  else
+  {
+    isSecret = 0;
+  }
+
+  mpz_clear(result);
+  mpz_clear(dummy);
+  mpz_clear(m_product);
+  for (int i = 0; i < instance->t; i++)
+  {
+    mpz_clear(a[i]);
+    mpz_clear(b[i]);
+    mpz_clear(e[i]);
+  }
+
+  return isSecret;
 }
 
 void print_instance(struct asmuth_bloom *instance)
