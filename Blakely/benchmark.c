@@ -25,14 +25,14 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
 
-  //instance = init_instance(t, n, lambda);
-  //generate_secret(instance);
-  //generate_shares(instance);
+  instance = init_instance(t, n, lambda);
+  generate_secret(instance);
+  generate_shares(instance);
   //printf("Secret recovered: %d\n", recover_secret(instance));
 
-  // print_instance(instance);
+  print_instance(instance);
 
-  // free_instance(instance);
+  free_instance(instance);
 
   return 0;
 }

@@ -10,11 +10,17 @@ struct blakely {
   int t;
   int n;
   int lambda;
+  gmp_randstate_t state; // RNG
 
   // flags
   int passedInit;
   int hasSecret;
   int hasShares;
+
+  // big ints
+  mpz_t *s; // secret is s[0]
+  mpz_t p; // prime
+  mpz_t **shares; // shares
 };
 
 void free_instance(struct blakely *);
