@@ -31,7 +31,13 @@ void generate_secret(struct blakely *);
 
 void generate_shares(struct blakely *);
 
+void determinant_mod(mpz_t **, mpz_t *, int, mpz_t);
+
+void get_cofactor(mpz_t **, mpz_t *, int, int, int, mpz_t);
+
 int recover_secret(struct blakely *);
+
+void print_mpz_matrix(mpz_t **, int, int);
 
 void print_instance(struct blakely *);
 
