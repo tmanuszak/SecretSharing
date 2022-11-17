@@ -323,9 +323,14 @@ void get_cofactor(mpz_t **matrix, mpz_t *result, int x, int y, int n, mpz_t p) {
 }
 
 
-// Not yet implemented
 int recover_secret(struct blakely *instance)
 {
+	if (instance->hasShares != 1) {
+		printf("Cannot recover secret if instance does not have shares.\n");
+		free(instance);
+		exit(EXIT_FAILURE);
+	}
+	
 	// 1. Get the determinant of the following square shares matrix:
 	// 		[share[0][0], ..., share[0][t-2], -1]
 	// 		[share[1][0], ..., share[1][t-2], -1]
