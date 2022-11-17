@@ -27,10 +27,11 @@ int main(int argc, char *argv[])
 
   instance = init_instance(t, n, lambda);
   generate_secret(instance);
-  // generate_shares(instance);
+	
+	generate_shares(instance);
   // printf("Secret recovered: %d\n", recover_secret(instance));
 
-  //print_instance(instance);
+  print_instance(instance);
 
   free_instance(instance);
 

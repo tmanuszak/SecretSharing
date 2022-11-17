@@ -18,6 +18,9 @@ struct shamir {
   int hasShares;
 
   // big ints
+	mpz_t *s; // secret array. s[0] is secret. s[i] is ith coefficient of the poly
+	mpz_t p; // we will do arithmetic over GF(p).
+	mpz_t *shares; // share array. Participant 0's share is (0, share[0]).
 };
 
 void free_instance(struct shamir *);
