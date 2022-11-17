@@ -164,8 +164,45 @@ int recover_secret(struct shamir *instance)
 		exit(EXIT_FAILURE);
 	}
 
-	int found_secret = 0;
+	// LAGRANGE INTERPOLATION
+	mpz_t result, product, denom;
+	mpz_init(result); // result = 0
+	mpz_init(product); // product = 0
+	mpz_init(denom);  // den = 0
+	for (int i = 0; i < instance->t; i++) {
+		mpz_set_ui(product, (unsigned long int) 1); // product = 1
+		for (int j = 0; j < instance->t; j++) {
+			if (j != i) {
+				// multiplying the numerator
+				// product = product * (j + 1) mod p
+				mpz_mul_ui(product, product, (unsigned long int) (j + 1));
+				mpz_mod(product, product, instance->p);
 
+				// multiplying the denominator
+				// denom = (j+1) - (i+1)
+				mpz_set_si(denom, (signed long int) ((j + 1) - (i  +1)));
+				// denom = denom mod p
+				mpz_fdiv_r(denom, denom, instance->p);
+				// denom = denom^-1
+				mpz_invert(denom, denom, instance->p);
+				// product = product * denom
+				mpz_mul(product, product, denom);
+			}
+		}
+
+		// result = result + shares[i] * product mod p
+		mpz_addmul(result, (instance->shares)[i], product);
+		mpz_mod(result, result, instance->p);
+	}
+
+	int found_secret = 0;
+	if (mpz_cmp(result, (instance->s)[0]) == 0) { // SUCCESS!
+		found_secret = 1;
+	}
+
+	mpz_clear(result);
+	mpz_clear(product);
+	mpz_clear(denom);
 	return found_secret;
 }
 
