@@ -1,0 +1,15 @@
+
+ Performance counter stats for '/home/cj/SecretSharing/Shamir/benchmark 4 128 512' (10 runs):
+
+             38.86 msec task-clock                #    0.979 CPUs utilized            ( +-  2.71% )
+                 1      context-switches          #   25.534 /sec                     ( +- 40.00% )
+                 0      cpu-migrations            #    0.000 /sec                   
+                78      page-faults               #    1.992 K/sec                    ( +-  0.60% )
+        63,783,454      cycles                    #    1.629 GHz                      ( +-  2.77% )
+       170,189,489      instructions              #    2.65  insn per cycle           ( +-  2.97% )
+        11,543,070      branches                  #  294.742 M/sec                    ( +-  2.93% )
+           122,058      branch-misses             #    1.07% of all branches          ( +-  4.71% )
+
+           0.03971 +- 0.00105 seconds time elapsed  ( +-  2.64% )
+
+Run Configuration,Shamir,4,128,512
