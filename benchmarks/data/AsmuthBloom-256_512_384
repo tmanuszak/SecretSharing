@@ -1,0 +1,15 @@
+
+ Performance counter stats for '/home/cj/SecretSharing/AsmuthBloom/benchmark 256 512 384' (10 runs):
+
+          3,892.53 msec task-clock                #    0.955 CPUs utilized            ( +-  3.36% )
+                21      context-switches          #    5.151 /sec                     ( +-  3.42% )
+                 0      cpu-migrations            #    0.000 /sec                   
+             3,207      page-faults               #  786.615 /sec                     ( +-  0.14% )
+    10,453,859,356      cycles                    #    2.564 GHz                      ( +-  3.36% )
+    29,706,279,514      instructions              #    2.71  insn per cycle           ( +-  3.52% )
+     2,183,775,196      branches                  #  535.637 M/sec                    ( +-  1.01% )
+        21,418,836      branch-misses             #    1.01% of all branches          ( +-  9.83% )
+
+             4.078 +- 0.131 seconds time elapsed  ( +-  3.20% )
+
+Run Configuration,AsmuthBloom,256,512,384
