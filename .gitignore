@@ -1,1 +1,14 @@
 **/*.swp
+
+Shamir/benchmark
+Shamir/*.o
+
+AsmuthBloom/benchmark
+AsmuthBloom/*.o
+
+Blakely/benchmark
+Blakely/*.o
+
+benchmarks/data/
+benchmarks/data_ubench/ubench-*
+
