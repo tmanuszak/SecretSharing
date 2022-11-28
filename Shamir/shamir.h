@@ -35,4 +35,6 @@ int recover_secret(struct shamir *);
 
 void print_instance(struct shamir *);
 
+int64_t read_time();
+
 #endif

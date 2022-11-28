@@ -28,6 +28,10 @@ void free_instance(struct shamir *instance)
 
 struct shamir *init_instance(int t, int n, int lambda)
 {
+
+  int64_t tStart,tEnd,tDiff;
+  tStart = read_time();
+
   struct shamir *instance;
   instance = (struct shamir *) malloc(1 * sizeof(struct shamir));
 
@@ -75,11 +79,21 @@ struct shamir *init_instance(int t, int n, int lambda)
 	
 	instance->passedInit = 1;
 
+  // BENCHMARKS  
+  tEnd = read_time();
+  tDiff = tEnd - tStart;
+  printf("Shamir,%d,%d,%d,%s,%ld\n",instance->t,instance->n,instance->lambda,__func__,tDiff);
+
   return instance;
 }
 
 void generate_secret(struct shamir *instance)
 {
+  //BENCHMARKS
+  int64_t tStart,tEnd,tDiff;
+  tStart = read_time();
+
+
   if (instance->passedInit != 1)
   {
     printf("Failed trying to generate secret before instance init.\n");
@@ -96,6 +110,12 @@ void generate_secret(struct shamir *instance)
 	mpz_urandomb((instance->s)[0], instance->state, instance->lambda);
  
   instance->hasSecret = 1; // so free_instance knows to free s
+
+  // BENCHMARKS  
+  tEnd = read_time();
+  tDiff = tEnd - tStart;
+  printf("Shamir,%d,%d,%d,%s,%ld\n",instance->t,instance->n,instance->lambda,__func__,tDiff);
+
   return;
 }
 
@@ -106,6 +126,10 @@ void generate_shares(struct shamir *instance)
     printf("Cannot generate shares on an Shamir instance that has already got shares, or has not been initialized.\n");
     return;
   }
+
+   // BENCHMARKS
+   int64_t tStart,tEnd,tDiff;
+   tStart = read_time();
 
 	// CHOOSING GALOIS FIELD GF(p)
 	// make random p such that s < p < 2^lambda
@@ -152,6 +176,12 @@ void generate_shares(struct shamir *instance)
 	mpz_clear(term);
 	
 	instance->hasShares = 1;
+
+
+  // BENCHMARKS  
+  tEnd = read_time();
+  tDiff = tEnd - tStart;
+  printf("Shamir,%d,%d,%d,%s,%ld\n",instance->t,instance->n,instance->lambda,__func__,tDiff);
   
   return;
 }
@@ -163,6 +193,10 @@ int recover_secret(struct shamir *instance)
 		free(instance);
 		exit(EXIT_FAILURE);
 	}
+
+   // BENCHMARKS
+   int64_t tStart,tEnd,tDiff;
+   tStart = read_time();
 
 	// LAGRANGE INTERPOLATION
 	mpz_t result, product, denom;
@@ -203,6 +237,13 @@ int recover_secret(struct shamir *instance)
 	mpz_clear(result);
 	mpz_clear(product);
 	mpz_clear(denom);
+
+
+   // BENCHMARKS  
+   tEnd = read_time();
+   tDiff = tEnd - tStart;
+   printf("Shamir,%d,%d,%d,%s,%ld\n",instance->t,instance->n,instance->lambda,__func__,tDiff);
+
 	return found_secret;
 }
 
@@ -253,4 +294,11 @@ void print_instance(struct shamir *instance)
 	}
 
   return;
+}
+
+int64_t read_time()
+{
+	  unsigned long lo, hi;
+	  __asm__ volatile ( "rdtsc" : "=a" (lo), "=d" (hi) ); 
+	  return( lo | (hi << 32) );
 }
