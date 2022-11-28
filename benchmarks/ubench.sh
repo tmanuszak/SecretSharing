@@ -86,10 +86,11 @@ done
 done
    # make one file per protocol
    p="${protocols[$e_indx]}"
-   log="${dir_dest}/${p}"
+   log="${dir_dest}/${p}.csv"
    regex="${dir_dest}/ubench-${p}*"
    touch $log 
-   cat $regex > $log 
+   echo "protocol,n,t,l,function,cycles" > $log
+   cat $regex >> $log 
 
    # cleanup junk from it 
    sed -i '/Run Configuration/d' $log 
